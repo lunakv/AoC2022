@@ -1,11 +1,12 @@
 #!/bin/sh
 
+export TIME="--- finished in %E ---"
 run_day() {
 	cd "$1"
 	echo "----- Running day $1 -----"
 	for file in solution*.py; do
 		echo "--- File $file ---"
-		python "$file" < input.txt
+		time python "$file" < input.txt
 	done
 	cd ..
 }
@@ -20,6 +21,7 @@ else
 	for dir in *; do
 		if [ -d "$dir" ]; then
 			run_day "$dir"
+			echo
 		fi
 	done
 fi
