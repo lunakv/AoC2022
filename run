@@ -1,0 +1,25 @@
+#!/bin/sh
+
+run_day() {
+	cd "$1"
+	echo "----- Running day $1 -----"
+	for file in solution*.py; do
+		echo "--- File $file ---"
+		python "$file" < input.txt
+	done
+	cd ..
+}
+
+if [ "$#" -gt 0 ]; then
+	day="$1"
+	if echo "$day" | grep -q '^[1-9]$'; then
+		day=0"$day"		
+	fi
+	run_day "$day"
+else
+	for dir in *; do
+		if [ -d "$dir" ]; then
+			run_day "$dir"
+		fi
+	done
+fi
