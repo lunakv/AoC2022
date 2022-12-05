@@ -1,8 +1,9 @@
 def prio(c):
     if c.islower():
-        return ord(c)-ord('a') + 1
+        return ord(c) - ord("a") + 1
     else:
-        return ord(c)-ord('A') + 27
+        return ord(c) - ord("A") + 27
+
 
 try:
     item_prio_sum = 0
@@ -10,7 +11,7 @@ try:
     current_group = []
     while True:
         line = input()
-        middle = len(line)//2
+        middle = len(line) // 2
         first, second = line[:middle], line[middle:]
         common = next(c for c in first if c in second)
         item_prio_sum += prio(common)
