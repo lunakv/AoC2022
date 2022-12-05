@@ -3,13 +3,25 @@
 export TIME="--- finished in %E ---"
 run_day() {
 	cd "$1"
-	echo "----- Running day $1 -----"
+	if [ "$TEST" = 1 ]; then
+		MSG="Testing"
+		INPUT="test.txt"
+	else
+		MSG="Running"
+		INPUT="input.txt"
+	fi
+	echo "----- $MSG day $1 -----"
 	for file in solution*.py; do
 		echo "--- File $file ---"
-		time python "$file" < input.txt
+		time python "$file" < $INPUT
 	done
 	cd ..
 }
+
+if [ "$1" = "-t" ]; then
+	export TEST=1
+	shift 
+fi
 
 if [ "$#" -gt 0 ]; then
 	day="$1"
