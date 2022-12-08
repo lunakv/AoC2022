@@ -1,5 +1,18 @@
 #!/bin/sh
 
+# Script runner for AoC 2022 python solutions
+# Usage:
+# ./run [-t] [DAY]
+#
+# If run without a DAY argument, runs all solutions in the project.
+# If run with a DAY argument, runs all solutions from that day.
+# Solution directories must be named as double-digit integers.
+# DAY can be specified as a single- or double-digit integer.
+# Solution files must be named in the form `solution*.py`.
+# Each day's directory is expected to contain an `input.txt`
+#   file that contains the puzzle input for that day.
+# If `-t` is specified, uses `test.txt` as input instead of `input.txt`
+
 export TIME="--- finished in %E ---"
 run_day() {
 	cd "$1"
