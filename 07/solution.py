@@ -29,21 +29,18 @@ class Dir:
     def get_size(self) -> int:
         return sum(self.files[name].get_size() for name in self.files)
 
-    def get_dir_sizes(self) -> list[(str, int)]:
-        return self.__get_dir_sizes()[1]
-
-    def __get_dir_sizes(self) -> (int, list[(str, int)]):
+    def get_dir_sizes(self) -> (int, list[int]):
         dir_sizes = []
         self_size = 0
         for name in self.dirs:
-            child_size, child_dir_sizes = self.dirs[name].__get_dir_sizes()
+            child_size, child_dir_sizes = self.dirs[name].get_dir_sizes()
             dir_sizes += child_dir_sizes
             self_size += child_size
 
         for name in self.files:
             self_size += self.files[name].get_size()
 
-        dir_sizes.append((self.name, self_size))
+        dir_sizes.append(self_size)
         return self_size, dir_sizes
 
 
@@ -94,7 +91,9 @@ line = get_line()
 while line:
     line = parse_command(line)
 
-small_dir_sizes_total = sum(
-    item[1] for item in root.get_dir_sizes() if item[1] <= 100000
-)
+root_size, dir_sizes = root.get_dir_sizes()
+small_dir_sizes_total = sum(filter(lambda s: s < 100000, dir_sizes))
+need_to_free = 30000000 - (70000000 - root_size)
+smallest_sufficient_dir = min(filter(lambda s: s > need_to_free, dir_sizes))
 print(small_dir_sizes_total)
+print(smallest_sufficient_dir)
