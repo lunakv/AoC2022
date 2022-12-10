@@ -19,14 +19,16 @@ run_day() {
 	if [ "$TEST" = 1 ]; then
 		MSG="Testing"
 		INPUT="test.txt"
+		ARGS='-t'
 	else
 		MSG="Running"
 		INPUT="input.txt"
+		ARGS=''
 	fi
 	echo "----- $MSG day $1 -----"
 	for file in solution*.py; do
 		echo "--- File $file ---"
-		time python "$file" < $INPUT
+		time python "$file" $ARGS < $INPUT
 	done
 	cd ..
 }
