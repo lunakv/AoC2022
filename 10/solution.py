@@ -1,23 +1,25 @@
 POLL_FREQUENCY = 40
 POLL_START = 20
 
+
 def signal_strength(x, cycle):
     return x * cycle
+
 
 clock = 0
 total_strength = 0
 x = 1
-display = ''
+display = ""
 
 to_add = None
 try:
     while True:
         if abs(x - (clock % POLL_FREQUENCY)) <= 1:
-            display += '#'
+            display += "#"
         else:
-            display += '.'
+            display += "."
 
-        clock += 1 
+        clock += 1
         if clock == POLL_START or (clock - POLL_START) % POLL_FREQUENCY == 0:
             total_strength += x * clock
 
@@ -36,5 +38,4 @@ try:
 except EOFError:
     print(total_strength)
     for i in range(0, len(display), 40):
-        print(display[i:i+40])
-
+        print(display[i : i + 40])

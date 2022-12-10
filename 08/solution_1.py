@@ -40,35 +40,3 @@ for j, column in enumerate(bottom_visible):
 
 total_visible = sum(sum(bool(c) for c in row) for row in visibility_mask)
 print(total_visible)
-
-exit()
-
-print("Top visible:")
-for i, row in enumerate(forest):
-    for j, tree in enumerate(row):
-        print(tree if visibility_mask[i][j].top else " ", end="")
-    print()
-
-print("Bottom visible:")
-for i, row in enumerate(forest):
-    for j, tree in enumerate(row):
-        print(tree if visibility_mask[i][j].bottom else " ", end="")
-    print()
-
-print("Left visible:")
-for i, row in enumerate(forest):
-    for j, tree in enumerate(row):
-        print(tree if visibility_mask[i][j].left else " ", end="")
-    print()
-
-print("Right visible:")
-for i, row in enumerate(forest):
-    for j, tree in enumerate(row):
-        print(tree if visibility_mask[i][j].right else " ", end="")
-    print()
-
-print("Invisible:")
-for i, row in enumerate(forest):
-    for j, tree in enumerate(row):
-        print(tree if not visibility_mask[i][j] else " ", end="")
-    print()
