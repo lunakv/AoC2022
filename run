@@ -3,6 +3,7 @@
 # Script runner for AoC 2022 python solutions
 # Usage:
 # ./run [-t] [DAY]
+# ./run -i
 #
 # If run without a DAY argument, runs all solutions in the project.
 # If run with a DAY argument, runs all solutions from that day.
@@ -12,6 +13,7 @@
 # Each day's directory is expected to contain an `input.txt`
 #   file that contains the puzzle input for that day.
 # If `-t` is specified, uses `test.txt` as input instead of `input.txt`
+# The `-i` flag runs the program in user interractive mode
 
 export TIME="--- finished in %E ---"
 run_day() {
@@ -36,10 +38,20 @@ run_day() {
 if [ "$1" = "-t" ]; then
 	export TEST=1
 	shift 
+elif [ "$1" = "-i" ]; then
+	echo -n "Day (1-25): "
+	read day
+	echo -n "Test? (y/N): "
+	read t
+	if [ "$t" = "y" ] || [ "$t" = "Y" ]; then
+		export TEST=1
+	fi
+	shift
+elif [ -n "$1" ]; then
+	day="$1"
 fi
 
-if [ "$#" -gt 0 ]; then
-	day="$1"
+if [ -n "$day" ]; then
 	if echo "$day" | grep -q '^[1-9]$'; then
 		day=0"$day"		
 	fi
