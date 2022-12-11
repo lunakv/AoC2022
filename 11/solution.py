@@ -35,11 +35,16 @@ class Monkey:
         else:
             raise ValueError(f'Invalid operator "{operator}"')
 
+        for i in [0, 2]:
+            if operation[i] == "old":
+                operation[i] = lambda x: x
+            else:
+                n = int(operation[i])
+                operation[i] = lambda _: n
         self.args = (operation[0], operation[2])
 
     def __update_threat(self, threat):
-        parse_arg = lambda x: threat if x == "old" else int(x)
-        arg1, arg2 = [parse_arg(x) for x in self.args]
+        arg1, arg2 = [arg(threat) for arg in self.args]
         return (
             self.operation(arg1, arg2) // Monkey.RELIEF_FACTOR
         ) % Monkey.ALL_DIVISOR_PRODUCT
