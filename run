@@ -47,7 +47,9 @@ elif [ "$1" = "-i" ]; then
 		export TEST=1
 	fi
 	shift
-elif [ -n "$1" ]; then
+fi
+
+if [ -n "$1" ]; then
 	day="$1"
 fi
 
