@@ -2,32 +2,32 @@ from typing import Literal
 
 
 def parse_line(line: str) -> list | int:
-    return _parse_line_recursive(line, 0, len(line))[1]
+    return _parse_line_recursive(line, 0)[1]
 
 
-def _parse_line_recursive(list_line: str, start: int, end: int) -> tuple[int, list | int]:
-    if list_line[start] == ",":
+def _parse_line_recursive(line: str, start: int) -> tuple[int, list | int]:
+    if line[start] == ",":
         # starts at separating comma, skip
         start += 1
 
-    if list_line[start] == "[":
+    if line[start] == "[":
         # parsing list value
         i = start + 1  # current char pointer
         ret = []
-        while i < end:
-            if list_line[i] == "]":
+        while i < len(line):
+            if line[i] == "]":
                 # closing list
                 return i + 1, ret
             else:
                 # recursing to parse list element
-                i, val = _parse_line_recursive(list_line, i, end)
+                i, val = _parse_line_recursive(line, i)
                 ret.append(val)
         raise ValueError("Unclosed list encountered")
     else:
         # parsing int value
-        for i in range(start, end):
-            if list_line[i] == "," or list_line[i] == "]":
-                return i, int(list_line[start:i])
+        for i in range(start, len(line)):
+            if line[i] == "," or line[i] == "]":
+                return i, int(line[start:i])
         raise ValueError("Unterminated int value encountered")
 
 
