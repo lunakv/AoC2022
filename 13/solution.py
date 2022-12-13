@@ -5,9 +5,7 @@ def parse_line(line: str) -> list | int:
     return _parse_line_recursive(line, 0, len(line))[1]
 
 
-def _parse_line_recursive(
-    list_line: str, start: int, end: int
-) -> tuple[int, list | int]:
+def _parse_line_recursive(list_line: str, start: int, end: int) -> tuple[int, list | int]:
     if list_line[start] == ",":
         # starts at separating comma, skip
         start += 1

@@ -45,9 +45,7 @@ class Monkey:
 
     def __update_threat(self, threat):
         arg1, arg2 = [arg(threat) for arg in self.args]
-        return (
-            self.operation(arg1, arg2) // Monkey.RELIEF_FACTOR
-        ) % Monkey.ALL_DIVISOR_PRODUCT
+        return (self.operation(arg1, arg2) // Monkey.RELIEF_FACTOR) % Monkey.ALL_DIVISOR_PRODUCT
 
     def __throw_item(self, item) -> (int, int):
         self.inspections += 1
