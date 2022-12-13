@@ -1,75 +1,83 @@
-import re
+from typing import Literal
 
 
-def parse_line(line):
-    return parse_list(line, 0, len(line))[1]
+def parse_line(line: str) -> list | int:
+    return _parse_line_recursive(line, 0, len(line))[1]
 
 
-def parse_list(list_line, start, end):
+def _parse_line_recursive(
+    list_line: str, start: int, end: int
+) -> tuple[int, list | int]:
     if list_line[start] == ",":
-        # starting comma, skip
+        # starts at separating comma, skip
         start += 1
 
     if list_line[start] == "[":
-        # parsing as list
-        i = start + 1
+        # parsing list value
+        i = start + 1  # current char pointer
         ret = []
         while i < end:
             if list_line[i] == "]":
                 # closing list
                 return i + 1, ret
             else:
-                # recursing
-                i, val = parse_list(list_line, i, end)
+                # recursing to parse list element
+                i, val = _parse_line_recursive(list_line, i, end)
                 ret.append(val)
+        raise ValueError("Unclosed list encountered")
     else:
-        # parsing as int
-        for i in range(start + 1, end):
+        # parsing int value
+        for i in range(start, end):
             if list_line[i] == "," or list_line[i] == "]":
                 return i, int(list_line[start:i])
+        raise ValueError("Unterminated int value encountered")
 
 
-def compare_lists(list_a, list_b):
-    if isinstance(list_a, int) and isinstance(list_b, int):
-        if list_a < list_b:
+def compare(a: list | int, b: list | int) -> Literal[-1, 0, 1]:
+    if isinstance(a, int) and isinstance(b, int):
+        # simple integer comparison
+        if a < b:
             return -1
-        elif list_a > list_b:
+        elif a > b:
             return 1
         else:
             return 0
-    elif isinstance(list_a, int):
-        return compare_lists([list_a], list_b)
-    elif isinstance(list_b, int):
-        return compare_lists(list_a, [list_b])
+    # int-list comparisons reduce to list-list
+    elif isinstance(a, int):
+        return compare([a], b)
+    elif isinstance(b, int):
+        return compare(a, [b])
 
-    min_len = min(len(list_a), len(list_b))
+    # list-list comparison
+    min_len = min(len(a), len(b))
     for i in range(min_len):
-        cmp = compare_lists(list_a[i], list_b[i])
+        cmp = compare(a[i], b[i])
         if cmp != 0:
             return cmp
 
-    return compare_lists(len(list_a), len(list_b))
+    # in case of a tie, the shorter list comes first
+    return compare(len(a), len(b))
 
 
 try:
-    correct = 0
+    correct_pair_sum = 0
     above_2 = 0
     above_6 = 1  # [[2]] is above [[6]]
     i = 0
     while True:
+        i += 1
         a = parse_line(input())
         b = parse_line(input())
-        cmp = compare_lists(a, b)
+        cmp = compare(a, b)
         if cmp != 1:
-            correct += i
+            correct_pair_sum += i
         for l in [a, b]:
-            if compare_lists(l, [[2]]) == -1:
+            if compare(l, [[2]]) == -1:
                 above_2 += 1
                 above_6 += 1
-            elif compare_lists(l, [[6]]) == -1:
+            elif compare(l, [[6]]) == -1:
                 above_6 += 1
         input()
-        i += 1
 except EOFError:
-    print(correct)
-    print((above_2 + 1) * (above_6 + 1))
+    print(correct_pair_sum)
+    print((above_2 + 1) * (above_6 + 1))  # one-based indexing
